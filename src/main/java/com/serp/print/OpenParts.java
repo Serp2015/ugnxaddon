@@ -11,7 +11,7 @@ import java.util.List;
 public class OpenParts {
 
     @Autowired
-    private PrintPdf printPdf;
+    private OpenSheets openSheets;
     @Autowired
     private AssemblyListing assemblyListing;
 
@@ -22,7 +22,7 @@ public class OpenParts {
         String projectManstr = workPart.getStringAttribute("MANSTR");
 
         //Print PDF
-        printPdf.print(theSession, workPart, projectManstr);
+        openSheets.printSheet(theSession, workPart, projectManstr);
 
         List<String> componentList = assemblyListing.getList(theSession);
 
@@ -36,7 +36,7 @@ public class OpenParts {
                 setDisplayData1.loadStatus = null;
 
                 //Print PDF
-                printPdf.print(theSession, currentPart, projectManstr);
+                openSheets.printSheet(theSession, currentPart, projectManstr);
             } catch (Exception e) {
                 e.printStackTrace();
             }
