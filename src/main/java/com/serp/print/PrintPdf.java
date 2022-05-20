@@ -1,5 +1,6 @@
 package com.serp.print;
 
+import com.serp.message.AssemblyListingWindowOutputStream;
 import nxopen.*;
 import nxopen.drawings.DrawingSheet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class PrintPdf {
     private AssemblyListingWindowOutputStream listing;
     private PrintStream out;
 
-    public void print(Session session, Part workPart, String projectManstr, String sheetName) throws NXException, RemoteException {
+    public void print(Session session, Part workPart, String projectManstr, String sheetName, String number) throws NXException, RemoteException {
         listing.setSession(session);
         out = new PrintStream(listing);
 
@@ -56,7 +57,7 @@ public class PrintPdf {
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            printPDFBuilder1.setFilename("C:\\UGplot\\" + projectManstr + "\\" + nom + sheetName + ".pdf");
+            printPDFBuilder1.setFilename("C:\\UGplot\\" + projectManstr + "\\" + nom + number + ".pdf");
 
             printPDFBuilder1.commit();
             session.deleteUndoMark(markId2, null);

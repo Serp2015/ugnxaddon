@@ -1,4 +1,4 @@
-package com.serp.print;
+package com.serp.message;
 
 import nxopen.ListingWindow;
 import nxopen.NXException;

@@ -1,5 +1,6 @@
 package com.serp.print;
 
+import com.serp.message.AssemblyListingWindowOutputStream;
 import nxopen.NXException;
 import nxopen.Part;
 import nxopen.Session;
@@ -34,7 +35,8 @@ public class OpenSheets {
 
         for (int i = 0; i < sheetNames.size(); i++) {
             out.println("Printing: " + sheetNames.get(i));
-            printPdf.print(session, workPart, projectManstr, sheetNames.get(i));
+            String number = (sheetNames.size() == 1) ? "" : ("_" + (i + 1));
+            printPdf.print(session, workPart, projectManstr, sheetNames.get(i), number);
         }
     }
 }
