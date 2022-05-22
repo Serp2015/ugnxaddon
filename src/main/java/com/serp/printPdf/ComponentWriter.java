@@ -1,4 +1,4 @@
-package com.serp.print;
+package com.serp.printPdf;
 
 import nxopen.INXObject;
 import nxopen.NXException;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.rmi.RemoteException;
 
+//class for defining filenames
 @Service
 public class ComponentWriter {
 

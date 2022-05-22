@@ -1,35 +1,34 @@
-/*
-package com.serp.temp;
+package com.serp.printPdf;
 
+import com.serp.message.WindowOutputStream;
 import nxopen.*;
 import nxopen.drawings.DrawingSheet;
-import nxopen.drawings.DrawingSheetCollection;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
 
+//the class creates a folder with the project, assigns names to the drawings, prints the drawing in pdf
 @Service
 public class PrintPdf {
+    @Autowired
+    private WindowOutputStream out;
 
-    public void print(Session session, Part workPart, String projectManstr) throws NXException, RemoteException {
+    public void print(Session session, Part workPart, String projectManstr, String sheetName, String number) throws NXException, RemoteException {
+        out.setSession(session);
 
         DrawingSheet drawingSheet1 = null;
-        String nom = null;
         try {
-            drawingSheet1 = workPart.drawingSheets().currentDrawingSheet();
-            nom = workPart.getStringAttribute("NOM");
+            drawingSheet1 = workPart.drawingSheets().findObject(sheetName);
         } catch (Exception e) {
-            e.printStackTrace();
+            out.getPrintStream().println("лист не найден");
         }
+        String nom = workPart.getStringAttribute("NOM");
 
         if (drawingSheet1 != null && nom != null && projectManstr.equals(nom.substring(0, 12))) {
             int markId1 = session.setUndoMark(Session.MarkVisibility.INVISIBLE, "Start");
-
-            PrintPDFBuilder printPDFBuilder1;
-            printPDFBuilder1 = workPart.plotManager().createPrintPdfbuilder();
+            PrintPDFBuilder printPDFBuilder1 = workPart.plotManager().createPrintPdfbuilder();
             printPDFBuilder1.setScale(1.0);
             printPDFBuilder1.setColors(PrintPDFBuilder.Color.BLACK_ON_WHITE);
             printPDFBuilder1.setWidths(PrintPDFBuilder.Width.CUSTOM_THREE_WIDTHS);
@@ -45,7 +44,6 @@ public class PrintPdf {
             printPDFBuilder1.setWatermark("");
             NXObject[] sheets1 = new NXObject[1];
 
-            //new code
             sheets1[0] = drawingSheet1;
             printPDFBuilder1.sourceBuilder().setSheets(sheets1);
 
@@ -54,10 +52,10 @@ public class PrintPdf {
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            printPDFBuilder1.setFilename("C:\\UGplot\\" + projectManstr + "\\" + nom + ".pdf");
+            //create file
+            printPDFBuilder1.setFilename("C:\\UGplot\\" + projectManstr + "\\" + nom + number + ".pdf");
 
-            NXObject nXObject1;
-            nXObject1 = printPDFBuilder1.commit();
+            printPDFBuilder1.commit();
             session.deleteUndoMark(markId2, null);
             session.setUndoMarkName(markId1, "Export PDF");
             printPDFBuilder1.destroy();
@@ -65,4 +63,3 @@ public class PrintPdf {
         }
     }
 }
-*/

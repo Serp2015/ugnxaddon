@@ -1,4 +1,4 @@
-package com.serp.print;
+package com.serp.printPdf;
 
 import nxopen.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.rmi.RemoteException;
 import java.util.List;
 
+//class for iterating parts
 @Service
 public class OpenParts {
 
@@ -21,7 +22,7 @@ public class OpenParts {
 
         String projectManstr = workPart.getStringAttribute("MANSTR");
 
-        //Print PDF
+        //printing in pdf assembly drawing
         openSheets.printSheet(theSession, workPart, projectManstr);
 
         List<String> componentList = assemblyListing.getList(theSession);
@@ -35,7 +36,7 @@ public class OpenParts {
                 setDisplayData1.loadStatus.dispose();
                 setDisplayData1.loadStatus = null;
 
-                //Print PDF
+                //printing in pdf of other drawings
                 openSheets.printSheet(theSession, currentPart, projectManstr);
             } catch (Exception e) {
                 e.printStackTrace();

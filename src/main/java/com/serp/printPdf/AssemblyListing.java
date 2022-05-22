@@ -1,4 +1,4 @@
-package com.serp.print;
+package com.serp.printPdf;
 
 import nxopen.NXException;
 import nxopen.Part;
@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+//class for traversing the assembly tree
 @Service
 public class AssemblyListing {
 

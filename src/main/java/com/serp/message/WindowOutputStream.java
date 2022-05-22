@@ -10,34 +10,41 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.rmi.RemoteException;
 
+//class for outputting information to the UGNX console
 @Service
-public class AssemblyListingWindowOutputStream extends OutputStream {
-    private ListingWindow m_lw;
-    private StringBuffer m_buf;
+public class WindowOutputStream extends OutputStream {
+    private ListingWindow mLw;
+    private StringBuffer mBuf;
+    private final PrintStream printStream = new PrintStream(this);
+
+    public PrintStream getPrintStream() {
+        return printStream;
+    }
 
     public void setSession(Session session) throws NXException, RemoteException {
-        this.m_lw = session.listingWindow();
-        m_buf = new StringBuffer();
-        if (!m_lw.isOpen())
-            m_lw.open();
+        this.mLw = session.listingWindow();
+        mBuf = new StringBuffer();
+        if (!mLw.isOpen())
+            mLw.open();
     }
 
     public void write(int b) throws IOException {
         char c = (char) b;
         try {
             if (c == '\n') {
-                m_lw.writeLine(m_buf.toString());
-                m_buf.delete(0, m_buf.length());
+                mLw.writeLine(mBuf.toString());
+                mBuf.delete(0, mBuf.length());
             } else
-                m_buf.append(c);
+                mBuf.append(c);
         } catch (NXException ex) {
             throw new IOException(ex.toString());
         }
     }
 
+    @Override
     public void close() throws IOException {
         try {
-            m_lw.close();
+            mLw.close();
         } catch (NXException ex) {
             throw new IOException(ex.toString());
         }

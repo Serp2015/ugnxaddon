@@ -1,6 +1,6 @@
-package com.serp.print;
+package com.serp.printPdf;
 
-import com.serp.message.AssemblyListingWindowOutputStream;
+import com.serp.message.WindowOutputStream;
 import nxopen.NXException;
 import nxopen.Part;
 import nxopen.Session;
@@ -9,22 +9,20 @@ import nxopen.drawings.DrawingSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.PrintStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+//class for iterating sheets
 @Service
 public class OpenSheets {
     @Autowired
     private PrintPdf printPdf;
     @Autowired
-    private AssemblyListingWindowOutputStream listing;
-    private PrintStream out;
+    private WindowOutputStream out;
 
     public void printSheet(Session session, Part workPart, String projectManstr) throws NXException, RemoteException {
-        listing.setSession(session);
-        out = new PrintStream(listing);
+        out.setSession(session);
 
         TaggedObjectCollection.Iterator iterator = workPart.drawingSheets().iterator();
         List<String> sheetNames = new ArrayList<>();
@@ -34,7 +32,7 @@ public class OpenSheets {
         }
 
         for (int i = 0; i < sheetNames.size(); i++) {
-            out.println("Printing: " + sheetNames.get(i));
+            out.getPrintStream().println("Printing: " + sheetNames.get(i));
             String number = (sheetNames.size() == 1) ? "" : ("_" + (i + 1));
             printPdf.print(session, workPart, projectManstr, sheetNames.get(i), number);
         }
