@@ -15,7 +15,7 @@ import java.util.List;
 
 //class for iterating sheets
 @Service
-public class OpenSheets {
+public class OpenSheetsPdf {
     @Autowired
     private PrintPdf printPdf;
     @Autowired

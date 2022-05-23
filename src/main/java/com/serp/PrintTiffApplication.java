@@ -1,6 +1,6 @@
 package com.serp;
 
-import com.serp.printPdf.OpenParts;
+import com.serp.printTiff.OpenPartsTiff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PrintTiffApplication implements CommandLineRunner {
 
 	@Autowired
-	private OpenParts openParts;
+	private OpenPartsTiff openParts;
 
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(PrintTiffApplication.class);

@@ -1,5 +1,6 @@
-package com.serp.printPdf;
+package com.serp.printTiff;
 
+import com.serp.service.AssemblyListing;
 import nxopen.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,10 +10,10 @@ import java.util.List;
 
 //class for iterating parts
 @Service
-public class OpenParts {
+public class OpenPartsTiff {
 
     @Autowired
-    private OpenSheets openSheets;
+    private OpenSheetsTiff openSheets;
     @Autowired
     private AssemblyListing assemblyListing;
 

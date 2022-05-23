@@ -1,4 +1,4 @@
-package com.serp.printPdf;
+package com.serp.service;
 
 import nxopen.NXException;
 import nxopen.Part;

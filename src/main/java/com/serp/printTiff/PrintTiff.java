@@ -58,7 +58,7 @@ public class PrintTiff {
 
             //create file
             String[] filenames1 = new String[1];
-            filenames1[0] = "C:\\UGplot\\" + projectManstr + "\\" + nom + number + ".pdf";
+            filenames1[0] = "C:\\UGplot\\" + projectManstr + "\\" + nom + number + ".tiff";
             plotBuilder1.setGraphicFilenames(filenames1);
             String[] filenames2 = new String[1];
             filenames2[0] = "C:\\UGplot\\" + projectManstr + "\\" + nom + number + ".cgm";
