@@ -1,6 +1,7 @@
+/*
 package com.serp;
 
-import com.serp.printTiff.OpenPartsTiff;
+import com.serp.printtiff.OpenPartsTiff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
@@ -25,4 +26,4 @@ public class PrintTiffApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		openParts.execute();
 	}
-}
+}*/

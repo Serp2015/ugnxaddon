@@ -1,4 +1,4 @@
-package com.serp.printTiff;
+package com.serp.printtiff;
 
 import com.serp.message.WindowOutputStream;
 import nxopen.NXException;

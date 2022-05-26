@@ -1,4 +1,4 @@
-package com.serp.printPdf;
+package com.serp.printpdf;
 
 import com.serp.message.WindowOutputStream;
 import nxopen.NXException;
@@ -20,8 +20,11 @@ public class OpenSheetsPdf {
     private PrintPdf printPdf;
     @Autowired
     private WindowOutputStream out;
+//    @Autowired
+//    private ConsoleOutput consoleOutput;
 
     public void printSheet(Session session, Part workPart, String projectManstr) throws NXException, RemoteException {
+//        consoleOutput.setSession(session);
         out.setSession(session);
 
         TaggedObjectCollection.Iterator iterator = workPart.drawingSheets().iterator();
@@ -32,6 +35,7 @@ public class OpenSheetsPdf {
         }
 
         for (int i = 0; i < sheetNames.size(); i++) {
+//            consoleOutput.println("Printing: " + sheetNames.get(i));
             out.getPrintStream().println("Printing: " + sheetNames.get(i));
             String number = (sheetNames.size() == 1) ? "" : ("_" + (i + 1));
             printPdf.print(session, workPart, projectManstr, sheetNames.get(i), number);

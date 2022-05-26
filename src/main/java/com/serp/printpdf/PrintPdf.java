@@ -1,4 +1,4 @@
-package com.serp.printPdf;
+package com.serp.printpdf;
 
 import com.serp.message.WindowOutputStream;
 import nxopen.*;

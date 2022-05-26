@@ -15,10 +15,9 @@ import java.rmi.RemoteException;
 public class WindowOutputStream extends OutputStream {
     private ListingWindow mLw;
     private StringBuffer mBuf;
-    private final PrintStream printStream = new PrintStream(this);
 
     public PrintStream getPrintStream() {
-        return printStream;
+        return new PrintStream(this);
     }
 
     public void setSession(Session session) throws NXException, RemoteException {

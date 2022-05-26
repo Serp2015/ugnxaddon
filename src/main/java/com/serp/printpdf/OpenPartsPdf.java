@@ -1,4 +1,4 @@
-package com.serp.printTiff;
+package com.serp.printpdf;
 
 import com.serp.service.AssemblyListing;
 import nxopen.*;
@@ -10,10 +10,10 @@ import java.util.List;
 
 //class for iterating parts
 @Service
-public class OpenPartsTiff {
+public class OpenPartsPdf {
 
     @Autowired
-    private OpenSheetsTiff openSheets;
+    private OpenSheetsPdf openSheets;
     @Autowired
     private AssemblyListing assemblyListing;
 
