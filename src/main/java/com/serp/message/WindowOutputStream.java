@@ -27,6 +27,7 @@ public class WindowOutputStream extends OutputStream {
             mLw.open();
     }
 
+    @Override
     public void write(int b) throws IOException {
         char c = (char) b;
         try {

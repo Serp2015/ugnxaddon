@@ -1,20 +1,24 @@
 package com.serp.message;
 
+import nxopen.NXException;
+import nxopen.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.OutputStream;
 import java.io.PrintStream;
+import java.rmi.RemoteException;
 
 //class for outputting information to the UGNX console
 @Service
 public class UGConsolePrint extends PrintStream {
+    @Autowired
+    private static WindowOutputStream windowOutputStream;
 
-    public UGConsolePrint(OutputStream out) {
-        super(out);
+    public UGConsolePrint() {
+        super(windowOutputStream);
     }
 
-    public static void main(String[] args) {
-        UGConsolePrint windowOutputStreamTest = new UGConsolePrint(System.out);
-        windowOutputStreamTest.println("test");
+    public void setSession(Session session) throws NXException, RemoteException {
+        windowOutputStream.setSession(session);
     }
 }
