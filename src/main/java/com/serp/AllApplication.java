@@ -1,6 +1,10 @@
 package com.serp;
 
 import com.serp.createassemble.CreateAssemble;
+import com.serp.preparenewfile.AddReferenceSets;
+import com.serp.preparenewfile.AddStandardPartRoot;
+import com.serp.printpdf.OpenPartsPdf;
+import com.serp.printtiff.OpenPartsTiff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
@@ -11,14 +15,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class AllApplication implements CommandLineRunner {
 
-    //	@Autowired
-//	private OpenPartsPdf openPartsPdf;
-//    @Autowired
-//    private OpenPartsTiff openPartsTiff;
-//    @Autowired
-//    private AddStandardPartRoot addStandardPartRoot;
-//    @Autowired
-//    private AddReferenceSets addReferenceSets;
+    @Autowired
+    private OpenPartsPdf openPartsPdf;
+    @Autowired
+    private OpenPartsTiff openPartsTiff;
+    @Autowired
+    private AddStandardPartRoot addStandardPartRoot;
+    @Autowired
+    private AddReferenceSets addReferenceSets;
     @Autowired
     private CreateAssemble createAssemble;
 

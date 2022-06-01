@@ -34,7 +34,7 @@ public class OpenSheetsTiff {
         for (int i = 0; i < sheetNames.size(); i++) {
             String number = (sheetNames.size() == 1) ? "" : ("_" + (i + 1));
             printTiff.print(session, workPart, projectManstr, sheetNames.get(i), number);
-            out.getPrintStream().println("Printing: " + sheetNames.get(i));
+            out.printMessage().println("Printing: " + sheetNames.get(i));
         }
     }
 }

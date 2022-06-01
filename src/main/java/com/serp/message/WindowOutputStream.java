@@ -16,7 +16,7 @@ public class WindowOutputStream extends OutputStream {
     private ListingWindow mLw;
     private StringBuffer mBuf;
 
-    public PrintStream getPrintStream() {
+    public PrintStream printMessage() {
         return new PrintStream(this);
     }
 

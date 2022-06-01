@@ -34,7 +34,7 @@ public class OpenSheetsPdf {
         for (int i = 0; i < sheetNames.size(); i++) {
             String number = (sheetNames.size() == 1) ? "" : ("_" + (i + 1));
             printPdf.print(session, workPart, projectManstr, sheetNames.get(i), number);
-            out.getPrintStream().println("Printing: " + sheetNames.get(i));
+            out.printMessage().println("Printing: " + sheetNames.get(i));
         }
     }
 }

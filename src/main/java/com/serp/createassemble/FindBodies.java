@@ -16,17 +16,18 @@ public class FindBodies {
     @Autowired
     private WindowOutputStream out;
 
-    public List<NXObject> findBodies(Session theSession, Part workPart) throws java.rmi.RemoteException, NXException {
-        List<NXObject> listBodies = new ArrayList<>();
+    public List<Body> findBodies(Session theSession, Part workPart) throws java.rmi.RemoteException, NXException {
+        List<Body> listBodies = new ArrayList<>();
         out.setSession(theSession);
         try {
             BodyCollection bodyCollection = workPart.bodies();
             TaggedObjectCollection.Iterator iterator = bodyCollection.iterator();
             while (iterator.hasNext()) {
-                listBodies.add((NXObject) iterator.next());
+                Body body = (Body) iterator.next();
+                listBodies.add(body);
             }
         } catch (Exception e) {
-            out.getPrintStream().println("FindBodies error");
+            out.printMessage().println("FindBodies error");
         }
         return listBodies;
     }

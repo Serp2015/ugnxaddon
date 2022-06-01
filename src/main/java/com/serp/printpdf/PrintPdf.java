@@ -22,7 +22,7 @@ public class PrintPdf {
         try {
             drawingSheet1 = workPart.drawingSheets().findObject(sheetName);
         } catch (Exception e) {
-            out.getPrintStream().println("лист не найден");
+            out.printMessage().println("лист не найден");
         }
         String nom = workPart.getStringAttribute("NOM");
 
