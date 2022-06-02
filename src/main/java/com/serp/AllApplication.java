@@ -1,6 +1,6 @@
 package com.serp;
 
-import com.serp.createassemble.CreateAssemble;
+import com.serp.createassemble.Assemble;
 import com.serp.preparenewfile.AddReferenceSets;
 import com.serp.preparenewfile.AddStandardPartRoot;
 import com.serp.printpdf.OpenPartsPdf;
@@ -24,7 +24,7 @@ public class AllApplication implements CommandLineRunner {
     @Autowired
     private AddReferenceSets addReferenceSets;
     @Autowired
-    private CreateAssemble createAssemble;
+    private Assemble createAssemble;
 
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(AllApplication.class);
@@ -39,6 +39,6 @@ public class AllApplication implements CommandLineRunner {
 //		openPartsTiff.execute();
 //      addStandardPartRoot.addAttributes();
 //      addReferenceSets.addReference();
-        createAssemble.create();
+        createAssemble.createAssemble();
     }
 }

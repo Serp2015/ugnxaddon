@@ -1,38 +1,14 @@
 package com.serp.createassemble;
 
-import com.serp.message.WindowOutputStream;
-import lombok.Data;
 import nxopen.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.rmi.RemoteException;
-import java.util.List;
 
 @Service
-@Data
-public class CreateAssemble {
-    @Autowired
-    private FindBodies findBodies;
-    @Autowired
-    private WindowOutputStream out;
+public class Component {
 
-    public void create() throws NXException, RemoteException {
-        Session theSession = (Session) SessionFactory.get("Session");
-        Part workPart = theSession.parts().work();
-
-        out.setSession(theSession);
-        List<Body> bodies = findBodies.findBodies(theSession, workPart);
-        for (int i = 0; i < bodies.size(); i++) {
-            try {
-                createComponent(theSession, workPart, bodies.get(i), i + 1);
-            } catch (Exception e) {
-                out.printMessage().println("Creating component error -" + e.getMessage());
-            }
-        }
-    }
-
-    private void createComponent(Session theSession, Part workPart, Body theBody, int fileNumber) throws NXException, RemoteException {
+    public void createComponent(Session theSession, Part workPart, Body theBody, int fileNumber) throws NXException, RemoteException {
         //preparation component
         theSession.setUndoMark(nxopen.Session.MarkVisibility.VISIBLE, "Create New Component");
         int markId2 = theSession.setUndoMark(nxopen.Session.MarkVisibility.VISIBLE, "Start");
@@ -69,9 +45,5 @@ public class CreateAssemble {
         createNewComponentBuilder1.destroy();
         theSession.deleteUndoMark(markId6, null);
         theSession.deleteUndoMarksUpToMark(markId2, null, false);
-    }
-
-    public static final int getUnloadOption() {
-        return BaseSession.LibraryUnloadOption.IMMEDIATELY;
     }
 }

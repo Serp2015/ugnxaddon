@@ -25,6 +25,7 @@ public class FindBodies {
             while (iterator.hasNext()) {
                 Body body = (Body) iterator.next();
                 listBodies.add(body);
+                out.printMessage().println(body.journalIdentifier());
             }
         } catch (Exception e) {
             out.printMessage().println("FindBodies error");
