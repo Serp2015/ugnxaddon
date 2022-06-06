@@ -27,13 +27,14 @@ public class Assemble {
         Session theSession = (Session) SessionFactory.get("Session");
         Part workPart = theSession.parts().work();
         out.setSession(theSession);
+
         List<Body> bodies = findBodies.findBodies(theSession, workPart);
 //        sortBodies(theSession, workPart, bodies);
         for (int i = 0; i < bodies.size(); i++) {
             try {
                 MeasureBodies measureBodies = measure.calculateMeasure(theSession, workPart, bodies.get(i));
-                out.printMessage().println(bodies.get(i).journalIdentifier());
-                out.printMessage().println(measureBodies.volume());
+//                out.printMessage().println(bodies.get(i).journalIdentifier());
+//                out.printMessage().println(measureBodies.volume());
                 component.createComponent(theSession, workPart, bodies.get(i));
             } catch (Exception e) {
                 out.printMessage().println("createAssemble error -" + e.getMessage());

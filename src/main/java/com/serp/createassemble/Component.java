@@ -22,16 +22,18 @@ public class Component {
         fileNew1.setApplication(FileNewApplication.MODELING);
         fileNew1.setUnits(nxopen.Part.Units.MILLIMETERS);
 
+        //Adding volume and identifier to file name
         MeasureBodies measureBodies = measure.calculateMeasure(theSession, workPart, theBody);
         String identifier = theBody.journalIdentifier().replaceAll("[^\\d]", "");
-        String bodyName = String.format("%.0f" ,measureBodies.volume()) + "_" + identifier;
+        String bodyName = String.format("%.0f", measureBodies.volume()) + "_" + identifier;
+        String pathToFolder = workPart.fullPath().replace(workPart.name() + ".prt", "");
 
         if (theBody.isSolidBody()) {
-            fileNew1.setNewFileName("C:\\UGplot\\Solid_" + bodyName + ".prt");
+            fileNew1.setNewFileName(pathToFolder + "Solid_" + bodyName + ".prt");
         } else if (theBody.isSheetBody()) {
-            fileNew1.setNewFileName("C:\\UGplot\\Surface_" + bodyName + ".prt");
+            fileNew1.setNewFileName(pathToFolder + "Surface_" + bodyName + ".prt");
         } else {
-            fileNew1.setNewFileName("C:\\UGplot\\Model_" + bodyName + ".prt");
+            fileNew1.setNewFileName(pathToFolder + "Model_" + bodyName + ".prt");
         }
         fileNew1.setMasterFileName("");
         fileNew1.setUseBlankTemplate(false);
