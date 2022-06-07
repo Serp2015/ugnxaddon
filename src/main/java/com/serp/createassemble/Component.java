@@ -61,7 +61,7 @@ public class Component {
             createNewComponentBuilder1.setNewComponentName("MODEL_" + bodyName);
         }
         //creating component
-        Body body1 = (workPart.bodies().findObject(theBody.name()));
+        Body body1 = (workPart.bodies().findObject(theBody.journalIdentifier()));
         createNewComponentBuilder1.objectForNewComponent().add(body1);
         int markId5 = theSession.setUndoMark(nxopen.Session.MarkVisibility.INVISIBLE, "Create New Component");
         createNewComponentBuilder1.setNewFile(fileNew1);

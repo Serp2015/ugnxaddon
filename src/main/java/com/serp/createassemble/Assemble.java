@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.rmi.RemoteException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class Assemble {
@@ -28,16 +26,13 @@ public class Assemble {
         Part workPart = theSession.parts().work();
         out.setSession(theSession);
 
-        List<Body> bodies = findBodies.findBodies(theSession, workPart);
-//        sortBodies(theSession, workPart, bodies);
+        List<Body> bodies = new LinkedList<>(findBodies.findBodies(theSession, workPart));
         for (int i = 0; i < bodies.size(); i++) {
             try {
-                MeasureBodies measureBodies = measure.calculateMeasure(theSession, workPart, bodies.get(i));
-//                out.printMessage().println(bodies.get(i).journalIdentifier());
-//                out.printMessage().println(measureBodies.volume());
                 component.createComponent(theSession, workPart, bodies.get(i));
             } catch (Exception e) {
-                out.printMessage().println("createAssemble error -" + e.getMessage());
+                out.printMessage().print("createAssemble error - "
+                        + bodies.get(i).journalIdentifier() + " " + e.getMessage());
             }
         }
     }

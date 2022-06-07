@@ -5,11 +5,8 @@ import nxopen.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.rmi.RemoteException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 @Service
 public class FindBodies {
@@ -18,7 +15,7 @@ public class FindBodies {
     private WindowOutputStream out;
 
     public List<Body> findBodies(Session theSession, Part workPart) throws java.rmi.RemoteException, NXException {
-        List<Body> listBodies = new ArrayList<>();
+        List<Body> listBodies = new LinkedList<>();
         out.setSession(theSession);
         try {
             BodyCollection bodyCollection = workPart.bodies();
