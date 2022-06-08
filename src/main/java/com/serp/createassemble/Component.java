@@ -28,6 +28,7 @@ public class Component {
         String bodyName = String.format("%.0f", measureBodies.volume()) + "_" + identifier;
         String pathToFolder = workPart.fullPath().replace(workPart.name() + ".prt", "");
 
+        //create file name and file path
         if (theBody.isSolidBody()) {
             fileNew1.setNewFileName(pathToFolder + "Solid_" + bodyName + ".prt");
         } else if (theBody.isSheetBody()) {

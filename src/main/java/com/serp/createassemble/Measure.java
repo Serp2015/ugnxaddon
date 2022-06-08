@@ -16,11 +16,8 @@ public class Measure {
         out.setSession(theSession);
         MeasureBodies measureBodies1 = null;
         try {
-//            int markId1 = theSession.setUndoMark(nxopen.Session.MarkVisibility.VISIBLE, "Start");
             NXObject nullNXObject = null;
             MeasureBodyBuilder measureBodyBuilder1 = workPart.measureManager().createMeasureBodyBuilder(nullNXObject);
-//            measureBodyBuilder1.setAnnotationMode(nxopen.MeasureBuilder.AnnotationType.SHOW_DIMENSION);
-//            theSession.setUndoMarkName(markId1, "Measure Bodies диалог");
             measureBodyBuilder1.bodyObjects().add(theBody);
             Unit[] massUnits1 = new Unit[5];
             Unit unit1 = ((Unit) workPart.unitCollection().findObject("SquareMilliMeter"));
@@ -36,18 +33,6 @@ public class Measure {
             IBody[] objects1 = new IBody[1];
             objects1[0] = theBody;
             measureBodies1 = workPart.measureManager().newMassProperties(massUnits1, 0.99, objects1);
-
-            //Add code here
-//            out.printMessage().println(measureBodies1.centroid());
-//            out.printMessage().println(measureBodies1.volume());
-
-            /*measureBodies1.dispose();
-            measureBodies1 = null;
-            int markId2 = theSession.setUndoMark(nxopen.Session.MarkVisibility.INVISIBLE, "Measure Bodies");
-            measureBodyBuilder1.bodyObjects().clear();
-            theSession.deleteUndoMark(markId2, null);
-            theSession.setUndoMarkName(markId1, "Measure Bodies");
-            measureBodyBuilder1.destroy();*/
         } catch (Exception e) {
             out.printMessage().println("massCalculate - " + e.getMessage());
         }
