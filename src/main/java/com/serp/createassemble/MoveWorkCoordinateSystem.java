@@ -15,7 +15,8 @@ public class MoveWorkCoordinateSystem {
     @Autowired
     private WindowOutputStream out;
 
-    public void moveToCentroid(Session theSession, Part workPart, Point3d centroid) throws NXException, java.rmi.RemoteException {
+    public void moveToCentroid(Session theSession, Part workPart, Point3d centroid)
+            throws NXException, java.rmi.RemoteException {
         out.setSession(theSession);
         try {
             workPart.wcs().setOrigin(centroid);

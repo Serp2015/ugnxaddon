@@ -1,5 +1,6 @@
 package com.serp.createassemble;
 
+import com.serp.message.WindowOutputStream;
 import nxopen.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,8 @@ import java.rmi.RemoteException;
 public class Component {
     @Autowired
     private Measure measure;
+    @Autowired
+    private WindowOutputStream out;
 
     public void createComponent(Session theSession, Part workPart, Body theBody) throws NXException, RemoteException {
         //preparation component
@@ -23,18 +26,21 @@ public class Component {
         fileNew1.setUnits(nxopen.Part.Units.MILLIMETERS);
 
         //Adding volume and identifier to file name
-        MeasureBodies measureBodies = measure.calculateMeasure(theSession, workPart, theBody);
+        MeasureBodies measureSolids = measure.measureBody(theSession, workPart, theBody);
+        MeasureFaces measureFaces = measure.measureFace(theSession, workPart, theBody);
         String identifier = theBody.journalIdentifier().replaceAll("[^\\d]", "");
-        String bodyName = String.format("%.0f", measureBodies.volume()) + "_" + identifier;
+        String solidName = String.format("%.0f", measureSolids.volume()) + "_" + identifier;
+        String surfaceName = String.format("%.0f", measureFaces.area()) + "_" + identifier;
         String pathToFolder = workPart.fullPath().replace(workPart.name() + ".prt", "");
 
+        out.setSession(theSession);
         //create file name and file path
         if (theBody.isSolidBody()) {
-            fileNew1.setNewFileName(pathToFolder + "Solid_" + bodyName + ".prt");
+            fileNew1.setNewFileName(pathToFolder + "Solid_" + solidName + ".prt");
         } else if (theBody.isSheetBody()) {
-            fileNew1.setNewFileName(pathToFolder + "Surface_" + bodyName + ".prt");
+            fileNew1.setNewFileName(pathToFolder + "Surface_" + surfaceName + ".prt");
         } else {
-            fileNew1.setNewFileName(pathToFolder + "Model_" + bodyName + ".prt");
+            fileNew1.setNewFileName(pathToFolder + "Model_" + "empty" + ".prt");
         }
         fileNew1.setMasterFileName("");
         fileNew1.setUseBlankTemplate(false);
@@ -45,21 +51,21 @@ public class Component {
         nxopen.assemblies.CreateNewComponentBuilder createNewComponentBuilder1;
         createNewComponentBuilder1 = workPart.assemblyManager().createNewComponentBuilder();
         if (theBody.isSolidBody()) {
-            createNewComponentBuilder1.setNewComponentName("SOLID_" + bodyName);
+            createNewComponentBuilder1.setNewComponentName("SOLID_" + solidName);
         } else if (theBody.isSheetBody()) {
-            createNewComponentBuilder1.setNewComponentName("SURFACE_" + bodyName);
+            createNewComponentBuilder1.setNewComponentName("SURFACE_" + surfaceName);
         } else {
-            createNewComponentBuilder1.setNewComponentName("MODEL_" + bodyName);
+            createNewComponentBuilder1.setNewComponentName("MODEL_" + "empty");
         }
         createNewComponentBuilder1.setReferenceSet(nxopen.assemblies.CreateNewComponentBuilder.ComponentReferenceSetType.ENTIRE_PART_ONLY);
         createNewComponentBuilder1.setReferenceSetName("Entire Part");
         theSession.setUndoMarkName(markId4, "Create New Component диалог");
         if (theBody.isSolidBody()) {
-            createNewComponentBuilder1.setNewComponentName("SOLID_" + bodyName);
+            createNewComponentBuilder1.setNewComponentName("SOLID_" + solidName);
         } else if (theBody.isSheetBody()) {
-            createNewComponentBuilder1.setNewComponentName("SURFACE_" + bodyName);
+            createNewComponentBuilder1.setNewComponentName("SURFACE_" + surfaceName);
         } else {
-            createNewComponentBuilder1.setNewComponentName("MODEL_" + bodyName);
+            createNewComponentBuilder1.setNewComponentName("MODEL_" + "empty");
         }
         //creating component
         Body body1 = (workPart.bodies().findObject(theBody.journalIdentifier()));
