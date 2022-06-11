@@ -1,9 +1,12 @@
 package com.serp.message;
 
+import org.springframework.stereotype.Service;
+
 import javax.swing.*;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+@Service
 public class ReportException {
     public void report(Exception e) {
         StringWriter s = new StringWriter();

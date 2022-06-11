@@ -1,6 +1,7 @@
 package com.serp;
 
 import com.serp.createassemble.Assemble;
+import com.serp.message.ListingWindowImpl;
 import com.serp.preparenewfile.AddReferenceSets;
 import com.serp.preparenewfile.AddStandardPartRoot;
 import com.serp.printpdf.OpenPartsPdf;
@@ -39,6 +40,6 @@ public class AllApplication implements CommandLineRunner {
 //		openPartsTiff.execute();
 //      addStandardPartRoot.addAttributes();
 //      addReferenceSets.addReference();
-        createAssemble.createAssemble();
+//      createAssemble.createAssemble();
     }
 }
