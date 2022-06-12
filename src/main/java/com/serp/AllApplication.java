@@ -1,5 +1,6 @@
 package com.serp;
 
+import com.serp.block.BlockCreate;
 import com.serp.createassemble.Assemble;
 import com.serp.message.ListingWindowImpl;
 import com.serp.preparenewfile.AddReferenceSets;
@@ -26,6 +27,8 @@ public class AllApplication implements CommandLineRunner {
     private AddReferenceSets addReferenceSets;
     @Autowired
     private Assemble createAssemble;
+    @Autowired
+    private BlockCreate blockCreate;
 
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(AllApplication.class);
@@ -41,5 +44,6 @@ public class AllApplication implements CommandLineRunner {
 //      addStandardPartRoot.addAttributes();
 //      addReferenceSets.addReference();
 //      createAssemble.createAssemble();
+        blockCreate.start();
     }
 }

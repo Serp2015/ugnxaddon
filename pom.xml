@@ -45,6 +45,14 @@
         </dependency>
 
         <dependency>
+            <groupId>ru.stackoverflow.com</groupId>
+            <artifactId>nxopenUI</artifactId>
+            <version>${project.version}</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/NXOpenUI.jar</systemPath>
+        </dependency>
+
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
