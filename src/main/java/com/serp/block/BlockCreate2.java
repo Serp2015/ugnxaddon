@@ -324,21 +324,14 @@ public class BlockCreate2 implements BlockDialog.Initialize, BlockDialog.DialogS
             blockFeatureBuilder.setOriginPoint(point);
 
             PropertyList double0Properties = double0.getProperties();
-            for (String s : double0Properties.getPropertyNames()) {
-                theUI.nxmessageBox().show("Block Styler", NXMessageBox.DialogType.INFORMATION, "double0 " + s);
-            }
+            double double0Double = double0Properties.getDouble("Value");
             PropertyList double01Properties = double01.getProperties();
-            for (String s : double01Properties.getPropertyNames()) {
-                theUI.nxmessageBox().show("Block Styler", NXMessageBox.DialogType.INFORMATION, "double01 " + s);
-            }
+            double double01Double = double01Properties.getDouble("Value");
             PropertyList double02Properties = double02.getProperties();
-            for (String s : double02Properties.getPropertyNames()) {
-                theUI.nxmessageBox().show("Block Styler", NXMessageBox.DialogType.INFORMATION, "double02 " + s);
-            }
-
-            blockFeatureBuilder.setHeight("5");
-            blockFeatureBuilder.setLength("5");
-            blockFeatureBuilder.setWidth("5");
+            double double02Double = double02Properties.getDouble("Value");
+            blockFeatureBuilder.setLength(Double.toString(double0Double));
+            blockFeatureBuilder.setWidth(Double.toString(double01Double));
+            blockFeatureBuilder.setHeight(Double.toString(double02Double));
             blockFeatureBuilder.commit();
             blockFeatureBuilder.destroy();
         }
