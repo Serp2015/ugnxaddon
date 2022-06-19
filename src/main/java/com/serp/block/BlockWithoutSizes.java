@@ -36,13 +36,11 @@
 //------------------------------------------------------------------------------
 package com.serp.block;
 
-import com.serp.message.ListingWindowImpl;
 import nxopen.*;
 import nxopen.blockstyler.BlockDialog;
 import nxopen.blockstyler.PropertyList;
 import nxopen.features.Block;
 import nxopen.features.BlockFeatureBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.rmi.RemoteException;
@@ -51,11 +49,11 @@ import java.rmi.RemoteException;
 //------------------------------------------------------------------------------
 
 @Service
-public class BlockCreate implements BlockDialog.Initialize, BlockDialog.DialogShown, BlockDialog.Apply, BlockDialog.Ok, BlockDialog.Update {
+public class BlockWithoutSizes implements BlockDialog.Initialize, BlockDialog.DialogShown, BlockDialog.Apply, BlockDialog.Ok, BlockDialog.Update {
     //class members
     public static Session theSession = null;
     public static UI theUI = null;
-    static BlockCreate theBlockcreate;
+    static BlockWithoutSizes theBlockcreate;
     private String theDialogName;
     private nxopen.blockstyler.BlockDialog theDialog;
     private nxopen.blockstyler.UIBlock group0;// Block type: Group
@@ -105,7 +103,7 @@ public class BlockCreate implements BlockDialog.Initialize, BlockDialog.DialogSh
     //------------------------------------------------------------------------------
     //Constructor for NX Styler class
     //------------------------------------------------------------------------------
-    public BlockCreate() throws Exception, RemoteException {
+    public BlockWithoutSizes() throws Exception, RemoteException {
         try {
             theSession = (Session) SessionFactory.get("Session");
             theUI = (UI) SessionFactory.get("UI");
@@ -145,7 +143,7 @@ public class BlockCreate implements BlockDialog.Initialize, BlockDialog.DialogSh
     //------------------------------------------------------------------------------
     public void start() throws Exception {
         try {
-            theBlockcreate = new BlockCreate();
+            theBlockcreate = new BlockWithoutSizes();
             // The following method shows the dialog immediately
             theBlockcreate.show();
         } catch (Exception ex) {

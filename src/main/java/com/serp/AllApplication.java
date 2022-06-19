@@ -1,7 +1,8 @@
 package com.serp;
 
-import com.serp.block.BlockCreate;
-import com.serp.block.BlockCreate2;
+import com.serp.block.BlockWithSizes;
+import com.serp.block.BlockWithoutSizes;
+import com.serp.tolerance.Tolerance;
 import com.serp.createassemble.Assemble;
 import com.serp.preparenewfile.AddReferenceSets;
 import com.serp.preparenewfile.AddStandardPartRoot;
@@ -28,9 +29,11 @@ public class AllApplication implements CommandLineRunner {
     @Autowired
     private Assemble createAssemble;
     @Autowired
-    private BlockCreate blockCreate;
+    private BlockWithoutSizes blockCreate;
     @Autowired
-    private BlockCreate2 blockCreate2;
+    private BlockWithSizes blockCreate2;
+    @Autowired
+    private Tolerance tolerance;
 
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(AllApplication.class);
@@ -47,6 +50,7 @@ public class AllApplication implements CommandLineRunner {
 //      addReferenceSets.addReference();
 //      createAssemble.createAssemble();
 //      blockCreate.start();
-        blockCreate2.start();
+//      blockCreate2.start();
+        tolerance.start();
     }
 }

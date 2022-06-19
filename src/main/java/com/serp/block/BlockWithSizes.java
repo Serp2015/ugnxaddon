@@ -50,11 +50,11 @@ import java.rmi.RemoteException;
 //Represents Block Styler application class
 //------------------------------------------------------------------------------
 @Service
-public class BlockCreate2 implements BlockDialog.Initialize, BlockDialog.DialogShown, BlockDialog.Apply, BlockDialog.Ok, BlockDialog.Update {
+public class BlockWithSizes implements BlockDialog.Initialize, BlockDialog.DialogShown, BlockDialog.Apply, BlockDialog.Ok, BlockDialog.Update {
     //class members
     public static Session theSession = null;
     public static UI theUI = null;
-    static BlockCreate2 theBlockCreate;
+    static BlockWithSizes theBlockCreate;
     private String theDialogName;
     private nxopen.blockstyler.BlockDialog theDialog;
     private nxopen.blockstyler.UIBlock group0;// Block type: Group
@@ -107,7 +107,7 @@ public class BlockCreate2 implements BlockDialog.Initialize, BlockDialog.DialogS
     //------------------------------------------------------------------------------
     //Constructor for NX Styler class
     //------------------------------------------------------------------------------
-    public BlockCreate2() throws Exception, RemoteException {
+    public BlockWithSizes() throws Exception, RemoteException {
         try {
             theSession = (Session) SessionFactory.get("Session");
             theUI = (UI) SessionFactory.get("UI");
@@ -147,7 +147,7 @@ public class BlockCreate2 implements BlockDialog.Initialize, BlockDialog.DialogS
     //------------------------------------------------------------------------------
     public void start() throws Exception {
         try {
-            theBlockCreate = new BlockCreate2();
+            theBlockCreate = new BlockWithSizes();
             // The following method shows the dialog immediately
             theBlockCreate.show();
         } catch (Exception ex) {
