@@ -42,6 +42,7 @@ package com.serp.tolerance;
 //------------------------------------------------------------------------------
 
 import nxopen.*;
+import nxopen.uf.UFConstants;
 import nxopen.uistyler.*;
 import org.springframework.stereotype.Service;
 
@@ -538,6 +539,12 @@ public class Tolerance implements DialogItem.Apply, DialogItem.Construct, Dialog
             // ---- Enter your callback code here -----
             SelectionHandle selectionHandle = dimDialog.getSelectionHandle();
 
+            int[][] selectionMask_array =
+                    {
+                            {UFConstants.UF_dimension_type, UFConstants.UF_dim_horizontal_subtype, 0},
+                            {UFConstants.UF_dimension_type, UFConstants.UF_dim_cylindrical_subtype, 0},
+                            {UFConstants.UF_dimension_type, UFConstants.UF_dim_vertical_subtype, 0},
+                    };
 
 
         } catch (Exception ex) {
