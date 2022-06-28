@@ -534,18 +534,45 @@ public class Tolerance implements DialogItem.Apply, DialogItem.Construct, Dialog
     // Following callback is associated with the "dimDialog" Styler item.
     // Input: eventObject - object of UIStyler.StylerEvent class
     //------------------------------------------------------------------------------
+
+    String ATextList1[] = {"None", "*", "**", "M", "<o>", "сфера"};
+    int atl1Count = 6;
+    String ATextList2[] = {"None", "*", "**", "спр.", "справ.", "повт.", "x30<$s>", "x45<$s>", "x0,75", "x1", "x1,25", "x1,5", "x2", "max", "min", "- ход", "- установ.", "- закр. высота"};
+    int atl2Count = 18;
+    String ATextList3[] = {"None", "отв.", "рад.", "фаски", "фасок", "фаска", "паза", "пазов", "паз", "места", "мест", "место", "по контуру", "= ="};
+    int atl3_count = 14;
+
     public DialogState consrtructor_cb(StylerEvent e) throws java.rmi.RemoteException, nxopen.NXException {
         try {
             // ---- Enter your callback code here -----
             SelectionHandle selectionHandle = dimDialog.getSelectionHandle();
+            Selection.MaskTriple[] selectionMaskArray = new Selection.MaskTriple[15];
 
-            int[][] selectionMask_array =
-                    {
-                            {UFConstants.UF_dimension_type, UFConstants.UF_dim_horizontal_subtype, 0},
-                            {UFConstants.UF_dimension_type, UFConstants.UF_dim_cylindrical_subtype, 0},
-                            {UFConstants.UF_dimension_type, UFConstants.UF_dim_vertical_subtype, 0},
-                    };
+            for (int i = 0; i < selectionMaskArray.length; i++) {
+                selectionMaskArray[i] = new Selection.MaskTriple();
+                selectionMaskArray[i].type = UFConstants.UF_dimension_type;
+                selectionMaskArray[i].solidBodySubtype = 0;
+            }
+            // Комбинацию масок см в файлах:
+            // uf_object_types.h
+            selectionMaskArray[0].subtype = UFConstants.UF_dim_horizontal_subtype;
+            selectionMaskArray[1].subtype = UFConstants.UF_dim_cylindrical_subtype;
+            selectionMaskArray[2].subtype = UFConstants.UF_dim_vertical_subtype;
+            selectionMaskArray[3].subtype = UFConstants.UF_dim_parallel_subtype;
+            selectionMaskArray[4].subtype = UFConstants.UF_dim_perpendicular_subtype;
+            selectionMaskArray[5].subtype = UFConstants.UF_dim_angular_minor_subtype;
+            selectionMaskArray[6].subtype = UFConstants.UF_dim_angular_major_subtype;
+            selectionMaskArray[7].subtype = UFConstants.UF_dim_arc_length_subtype;
+            selectionMaskArray[8].subtype = UFConstants.UF_dim_radius_subtype;
+            selectionMaskArray[9].subtype = UFConstants.UF_dim_diameter_subtype;
+            selectionMaskArray[10].subtype = UFConstants.UF_dim_hole_subtype;
+            selectionMaskArray[11].subtype = UFConstants.UF_dim_conc_circle_subtype;
+            selectionMaskArray[12].subtype = UFConstants.UF_dim_folded_radius_subtype;
+            selectionMaskArray[13].subtype = UFConstants.UF_dim_ordinate_horiz_subtype;
+            selectionMaskArray[14].subtype = UFConstants.UF_dim_ordinate_vert_subtype;
 
+            theUI.selectionManager().setSelectionMask(
+                    selectionHandle, Selection.SelectionAction.CLEAR_AND_ENABLE_SPECIFIC, selectionMaskArray);
 
         } catch (Exception ex) {
             // ---- Enter your exception handling code here -----
@@ -585,8 +612,6 @@ public class Tolerance implements DialogItem.Apply, DialogItem.Construct, Dialog
     //------------------------------------------------------------------------------
     public DialogState apply_cb(StylerEvent e) throws java.rmi.RemoteException, nxopen.NXException {
         try {
-
-
             // ---- Enter your callback code here -----
 
 
@@ -607,11 +632,21 @@ public class Tolerance implements DialogItem.Apply, DialogItem.Construct, Dialog
     //------------------------------------------------------------------------------
     public DialogState Hole(StylerEvent e) throws java.rmi.RemoteException, nxopen.NXException {
         try {
-
-
             // ---- Enter your callback code here -----
+            String[] holeLetters = dimOption1.getItems();
+            int holeLetterValue = dimOption1.itemValue();
+            String holeLetter = holeLetters[holeLetterValue];
 
+            String[] holeQualitets = dimOptionI1.getItems();
+            int holeQualitetValue = dimOptionI1.itemValue();
+            String holeQualitet = holeQualitets[holeQualitetValue];
 
+            theUI.nxmessageBox().show("UI Styler", NXMessageBox.DialogType.INFORMATION, holeLetter + holeQualitet);
+
+//            for (String s : holeLetters) {
+//                if (e.getStylerItem().isEqualTo(dimOption1))
+//                    theUI.nxmessageBox().show("UI Styler", NXMessageBox.DialogType.INFORMATION, s);
+//            }
         } catch (Exception ex) {
             // ---- Enter your exception handling code here -----
             theUI.nxmessageBox().show("UI Styler", nxopen.NXMessageBox.DialogType.ERROR, ex.getMessage());
