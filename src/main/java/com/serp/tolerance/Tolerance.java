@@ -42,10 +42,13 @@ package com.serp.tolerance;
 //------------------------------------------------------------------------------
 
 import nxopen.*;
+import nxopen.uf.UF;
 import nxopen.uf.UFConstants;
 import nxopen.uistyler.*;
+import nxopen.uistyler.Dialog;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.rmi.RemoteException;
 
 //------------------------------------------------------------------------------
@@ -570,9 +573,11 @@ public class Tolerance implements DialogItem.Apply, DialogItem.Construct, Dialog
             selectionMaskArray[12].subtype = UFConstants.UF_dim_folded_radius_subtype;
             selectionMaskArray[13].subtype = UFConstants.UF_dim_ordinate_horiz_subtype;
             selectionMaskArray[14].subtype = UFConstants.UF_dim_ordinate_vert_subtype;
-
             theUI.selectionManager().setSelectionMask(
                     selectionHandle, Selection.SelectionAction.CLEAR_AND_ENABLE_SPECIFIC, selectionMaskArray);
+            theUI.selectionManager().setSelectionCallbacks(selectionHandle,
+                    filterCallback(null, selectionMaskArray[0], selectionHandle),
+                    selectionCallback(null, null, selectionHandle));
 
         } catch (Exception ex) {
             // ---- Enter your exception handling code here -----
@@ -582,6 +587,40 @@ public class Tolerance implements DialogItem.Apply, DialogItem.Construct, Dialog
         // A return value of nxopen.uistyler.DialogState.EXIT_DIALOG will not be accepted
         // for this callback type. You must continue dialog construction.
         return nxopen.uistyler.DialogState.CONTINUE_DIALOG;
+    }
+
+    public Selection.SelectionCallback selectionCallback(NXObject[] selectedObjects, NXObject[] deSelectedObjects, SelectionHandle selectH)
+            throws java.rmi.RemoteException, nxopen.NXException {
+        try {
+            if (selectedObjects != null) {
+                for (int i = 0; i < selectedObjects.length; i++) {
+                    //do something
+                }
+            }
+            if (deSelectedObjects != null) {
+                for (int j = 0; j < deSelectedObjects.length; j++) {
+                    //do something
+                }
+            }
+        } catch (Exception ex) {
+            // ---- Enter your exception handling code here -----
+            theUI.nxmessageBox().show("UI Styler", nxopen.NXMessageBox.DialogType.ERROR, ex.getMessage());
+        }
+        return (nxObjects, nxObjects1, selectionHandle) -> 0;
+    }
+
+    // Following is Filter Callback - This function gets invoked during selection.
+    // Here, we can put a logic to accept or reject the selected entities
+    public Selection.FilterCallback filterCallback(NXObject selectedObject, Selection.MaskTriple selectionMask, SelectionHandle arg2) {
+        Dimension dimension = (Dimension) selectedObject;
+        int constant = 0;
+        if (dimension != null) {
+            constant = UFConstants.UF_UI_SEL_ACCEPT;
+        } else {
+            constant = UFConstants.UF_UI_SEL_REJECT;
+        }
+        int finalConstant = constant;
+        return (nxObject, maskTriple, selectionHandle) -> finalConstant;
     }
 
     //------------------------------------------------------------------------------
@@ -643,10 +682,6 @@ public class Tolerance implements DialogItem.Apply, DialogItem.Construct, Dialog
 
             theUI.nxmessageBox().show("UI Styler", NXMessageBox.DialogType.INFORMATION, holeLetter + holeQualitet);
 
-//            for (String s : holeLetters) {
-//                if (e.getStylerItem().isEqualTo(dimOption1))
-//                    theUI.nxmessageBox().show("UI Styler", NXMessageBox.DialogType.INFORMATION, s);
-//            }
         } catch (Exception ex) {
             // ---- Enter your exception handling code here -----
             theUI.nxmessageBox().show("UI Styler", nxopen.NXMessageBox.DialogType.ERROR, ex.getMessage());
