@@ -42,20 +42,23 @@ package com.serp.tolerance;
 //------------------------------------------------------------------------------
 
 import nxopen.*;
-import nxopen.uf.UF;
 import nxopen.uf.UFConstants;
 import nxopen.uistyler.*;
-import nxopen.uistyler.Dialog;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 //------------------------------------------------------------------------------
 // Represents UI Styler application class
 //------------------------------------------------------------------------------
 @Service
-public class Tolerance implements DialogItem.Apply, DialogItem.Construct, DialogItem.Destruct, OptionMenu.Activate, PushButton.Activate {
+public class Tolerance implements DialogItem.Apply, DialogItem.Construct, DialogItem.Destruct, OptionMenu.Activate, PushButton.Activate,
+        Selection.FilterTaggedObjectCallback, Selection.TaggedObjectSelectionCallback {
     // class members
     public static Session theSession = null;
     public static UI theUI = null;
@@ -538,13 +541,6 @@ public class Tolerance implements DialogItem.Apply, DialogItem.Construct, Dialog
     // Input: eventObject - object of UIStyler.StylerEvent class
     //------------------------------------------------------------------------------
 
-    String ATextList1[] = {"None", "*", "**", "M", "<o>", "сфера"};
-    int atl1Count = 6;
-    String ATextList2[] = {"None", "*", "**", "спр.", "справ.", "повт.", "x30<$s>", "x45<$s>", "x0,75", "x1", "x1,25", "x1,5", "x2", "max", "min", "- ход", "- установ.", "- закр. высота"};
-    int atl2Count = 18;
-    String ATextList3[] = {"None", "отв.", "рад.", "фаски", "фасок", "фаска", "паза", "пазов", "паз", "места", "мест", "место", "по контуру", "= ="};
-    int atl3_count = 14;
-
     public DialogState consrtructor_cb(StylerEvent e) throws java.rmi.RemoteException, nxopen.NXException {
         try {
             // ---- Enter your callback code here -----
@@ -573,11 +569,11 @@ public class Tolerance implements DialogItem.Apply, DialogItem.Construct, Dialog
             selectionMaskArray[12].subtype = UFConstants.UF_dim_folded_radius_subtype;
             selectionMaskArray[13].subtype = UFConstants.UF_dim_ordinate_horiz_subtype;
             selectionMaskArray[14].subtype = UFConstants.UF_dim_ordinate_vert_subtype;
-            theUI.selectionManager().setSelectionMask(
-                    selectionHandle, Selection.SelectionAction.CLEAR_AND_ENABLE_SPECIFIC, selectionMaskArray);
-            theUI.selectionManager().setSelectionCallbacks(selectionHandle,
-                    filterCallback(null, selectionMaskArray[0], selectionHandle),
-                    selectionCallback(null, null, selectionHandle));
+
+            // Following sets the Selection mask for Dimension
+            theUI.selectionManager().setSelectionMask(selectionHandle,Selection.SelectionAction.CLEAR_AND_ENABLE_SPECIFIC,selectionMaskArray);
+            // Following sets the Selection and Filter callbacks which are invoked during selection
+            theUI.selectionManager().setTaggedObjectSelectionCallbacks(selectionHandle,this,this);
 
         } catch (Exception ex) {
             // ---- Enter your exception handling code here -----
@@ -587,40 +583,6 @@ public class Tolerance implements DialogItem.Apply, DialogItem.Construct, Dialog
         // A return value of nxopen.uistyler.DialogState.EXIT_DIALOG will not be accepted
         // for this callback type. You must continue dialog construction.
         return nxopen.uistyler.DialogState.CONTINUE_DIALOG;
-    }
-
-    public Selection.SelectionCallback selectionCallback(NXObject[] selectedObjects, NXObject[] deSelectedObjects, SelectionHandle selectH)
-            throws java.rmi.RemoteException, nxopen.NXException {
-        try {
-            if (selectedObjects != null) {
-                for (int i = 0; i < selectedObjects.length; i++) {
-                    //do something
-                }
-            }
-            if (deSelectedObjects != null) {
-                for (int j = 0; j < deSelectedObjects.length; j++) {
-                    //do something
-                }
-            }
-        } catch (Exception ex) {
-            // ---- Enter your exception handling code here -----
-            theUI.nxmessageBox().show("UI Styler", nxopen.NXMessageBox.DialogType.ERROR, ex.getMessage());
-        }
-        return (nxObjects, nxObjects1, selectionHandle) -> 0;
-    }
-
-    // Following is Filter Callback - This function gets invoked during selection.
-    // Here, we can put a logic to accept or reject the selected entities
-    public Selection.FilterCallback filterCallback(NXObject selectedObject, Selection.MaskTriple selectionMask, SelectionHandle arg2) {
-        Dimension dimension = (Dimension) selectedObject;
-        int constant = 0;
-        if (dimension != null) {
-            constant = UFConstants.UF_UI_SEL_ACCEPT;
-        } else {
-            constant = UFConstants.UF_UI_SEL_REJECT;
-        }
-        int finalConstant = constant;
-        return (nxObject, maskTriple, selectionHandle) -> finalConstant;
     }
 
     //------------------------------------------------------------------------------
@@ -679,8 +641,6 @@ public class Tolerance implements DialogItem.Apply, DialogItem.Construct, Dialog
             String[] holeQualitets = dimOptionI1.getItems();
             int holeQualitetValue = dimOptionI1.itemValue();
             String holeQualitet = holeQualitets[holeQualitetValue];
-
-            theUI.nxmessageBox().show("UI Styler", NXMessageBox.DialogType.INFORMATION, holeLetter + holeQualitet);
 
         } catch (Exception ex) {
             // ---- Enter your exception handling code here -----
@@ -906,5 +866,40 @@ public class Tolerance implements DialogItem.Apply, DialogItem.Construct, Dialog
         return nxopen.uistyler.DialogState.CONTINUE_DIALOG;
         // or Callback acknowledged, terminate dialog.
         // return nxopen.uistyler.DialogState.EXIT_DIALOG;
+    }
+
+    //Мапа для хранения выбранных размеров
+    private Map<Tag, TaggedObject> htDimensions = new HashMap();
+    @Override
+    public int taggedObjectSelectionCallback(TaggedObject[] selectedObjects, TaggedObject[] deSelectedObjects, SelectionHandle selectionHandle) throws NXException, RemoteException {
+        try {
+            if (selectedObjects != null) {
+                for (int i = 0; i < selectedObjects.length; i++) {
+                    //do something
+                    htDimensions.put(selectedObjects[i].tag(), selectedObjects[i]);
+                }
+            }
+            if (deSelectedObjects != null) {
+                for (int j = 0; j < deSelectedObjects.length; j++) {
+                    //do something
+                    htDimensions.remove(deSelectedObjects[j].tag());
+                }
+            }
+        } catch (Exception ex) {
+            // ---- Enter your exception handling code here -----
+            theUI.nxmessageBox().show("UI Styler", nxopen.NXMessageBox.DialogType.ERROR, ex.getMessage());
+        }
+        return 0;
+    }
+
+    // Following is Filter Callback - This function gets invoked during selection.
+    // Here, we can put a logic to accept or reject the selected entities
+    @Override
+    public int filterTaggedObjectCallback(TaggedObject selectedObject, Selection.MaskTriple selectionMask, SelectionHandle arg2) {
+        if (selectedObject.toString().contains("dimension")) {
+            return UFConstants.UF_UI_SEL_REJECT;
+        } else {
+            return UFConstants.UF_UI_SEL_ACCEPT;
+        }
     }
 }
